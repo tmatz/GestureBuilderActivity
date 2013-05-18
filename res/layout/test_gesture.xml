@@ -12,6 +12,7 @@
         android:layout_height="0dip"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:gestureStrokeType="single"
         android:fadeEnabled="false" >
 
         <EditText

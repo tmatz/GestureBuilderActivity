@@ -97,6 +97,7 @@ public class GestureBuilderActivity extends ListActivity {
 
         if (sStore == null) {
             sStore = GestureLibraries.fromFile(mStoreFile);
+            sStore.setOrientationStyle(4 /*GestureStore.ORIENTATION_SENSITIVE_4*/);
         }
         mEmpty = (TextView) findViewById(android.R.id.empty);
         loadGestures();

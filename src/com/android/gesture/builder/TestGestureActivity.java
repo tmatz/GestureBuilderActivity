@@ -21,25 +21,7 @@ public class TestGestureActivity extends Activity {
 			setContentView(R.layout.test_gesture);
 			final EditText text = (EditText) findViewById(R.id.text);
 			final GestureOverlayView overlay = (GestureOverlayView) findViewById(R.id.gestures_overlay);
-			
-//			overlay.addOnGesturePerformedListener(
-//					new GestureOverlayView.OnGesturePerformedListener() {
-//
-//						@Override
-//						public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
-//
-//							final GestureLibrary store = GestureBuilderActivity.getStore();
-//							ArrayList<Prediction> predictions = store.recognize(gesture);
-//							if (predictions.size() > 0) {
-//								Prediction prediction = predictions.get(0);
-//								if (prediction.score > 1.0) {
-//									text.append(prediction.name);
-//								}
-//							}
-//						}
-//					}
-//					);
-			
+
 			overlay.addOnGestureListener(new GestureOverlayView.OnGestureListener() {
 				
 				@Override
