@@ -20,7 +20,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     
-    <uses-sdk android:targetSdkVersion="11"/>
+    <uses-sdk android:targetSdkVersion="17" android:minSdkVersion="4"/>
     <application>
 
         <activity
@@ -39,6 +39,10 @@
         <activity
             android:name="CreateGestureActivity"
             android:label="@string/label_create_gesture" />
+
+        <activity
+            android:name="TestGestureActivity"
+            android:label="@string/label_test_gesture" />
 
     </application>
 </manifest>

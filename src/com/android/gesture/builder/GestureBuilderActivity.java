@@ -63,6 +63,7 @@ public class GestureBuilderActivity extends ListActivity {
     private static final int DIALOG_RENAME_GESTURE = 1;
 
     private static final int REQUEST_NEW_GESTURE = 1;
+    private static final int REQUEST_TEST_GESTURE = 2;
     
     // Type: long (id)
     private static final String GESTURES_INFO_ID = "gestures.info_id";
@@ -107,15 +108,18 @@ public class GestureBuilderActivity extends ListActivity {
         return sStore;
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
     public void reloadGestures(View v) {
         loadGestures();
     }
     
-    @SuppressWarnings({"UnusedDeclaration"})
     public void addGesture(View v) {
         Intent intent = new Intent(this, CreateGestureActivity.class);
         startActivityForResult(intent, REQUEST_NEW_GESTURE);
+    }
+    
+    public void testGesture(View v) {
+    	Intent intent = new Intent(this, TestGestureActivity.class);
+    	startActivityForResult(intent, REQUEST_TEST_GESTURE);
     }
 
     @Override
@@ -330,6 +334,7 @@ out:        for (String name : entries) {
             mThumbnailSize = (int) resources.getDimension(R.dimen.gesture_thumbnail_size);
 
             findViewById(R.id.addButton).setEnabled(false);
+            findViewById(R.id.testButton).setEnabled(false);
             findViewById(R.id.reloadButton).setEnabled(false);
             
             mAdapter.setNotifyOnChange(false);            
@@ -393,6 +398,7 @@ out:        for (String name : entries) {
                         mStoreFile.getAbsolutePath()));
             } else {
                 findViewById(R.id.addButton).setEnabled(true);
+                findViewById(R.id.testButton).setEnabled(true);
                 findViewById(R.id.reloadButton).setEnabled(true);
                 checkForEmpty();
             }

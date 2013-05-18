@@ -24,11 +24,14 @@
     <string name="application_name">Gestures Builder</string>
     <!-- Title, name of the activity used to create a gesture -->
     <string name="label_create_gesture">Create a gesture</string>
+    <!-- Title, name of the activity used to test gesture -->
+    <string name="label_test_gesture">Test gesture</string>
 
     <!-- Buttons -->
     <skip />
     <!-- Label, button used to add a gesture -->
     <string name="button_add">Add gesture</string>
+    <string name="button_test">Test gesture</string>
     <!-- Label, button used to reload all gestures -->
     <string name="button_reload">Reload</string>
     <!-- Label, button used to cancel the operation of adding a gesture -->
