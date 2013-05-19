@@ -10,7 +10,7 @@ import android.gesture.Prediction;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class TestGestureActivity extends Activity {
 
@@ -19,7 +19,7 @@ public class TestGestureActivity extends Activity {
 			super.onCreate(savedInstanceState);
 
 			setContentView(R.layout.test_gesture);
-			final EditText text = (EditText) findViewById(R.id.text);
+			final TextView text = (TextView) findViewById(R.id.text);
 			final GestureOverlayView overlay = (GestureOverlayView) findViewById(R.id.gestures_overlay);
 
 			overlay.addOnGestureListener(new GestureOverlayView.OnGestureListener() {

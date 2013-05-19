@@ -15,14 +15,11 @@
         android:gestureStrokeType="single"
         android:fadeEnabled="false" >
 
-        <EditText
+        <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
+            android:ems="10" />
     </android.gesture.GestureOverlayView>
 
     <LinearLayout
@@ -33,6 +30,7 @@
             android:id="@+id/done"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="done"
             android:text="@+string/button_done" />
     </LinearLayout>
 
