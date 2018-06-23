@@ -52,7 +52,8 @@ import java.util.Set;
 import java.io.File;
 import android.gesture.*;
 
-public class GestureBuilderActivity extends ListActivity {
+public class GestureBuilderActivity extends ListActivity
+{
     private static final int STATUS_SUCCESS = 0;
     private static final int STATUS_CANCELLED = 1;
     private static final int STATUS_NO_STORAGE = 2;
@@ -65,14 +66,15 @@ public class GestureBuilderActivity extends ListActivity {
 
     private static final int REQUEST_NEW_GESTURE = 1;
     private static final int REQUEST_TEST_GESTURE = 2;
-    
+
     // Type: long (id)
     private static final String GESTURES_INFO_ID = "gestures.info_id";
 
     private final File mStoreFile = new File(Environment.getExternalStorageDirectory(), "gestures");
 
     private final Comparator<NamedGesture> mSorter = new Comparator<NamedGesture>() {
-        public int compare(NamedGesture object1, NamedGesture object2) {
+        public int compare(NamedGesture object1, NamedGesture object2)
+        {
             return object1.name.compareTo(object2.name);
         }
     };
@@ -88,7 +90,8 @@ public class GestureBuilderActivity extends ListActivity {
     private NamedGesture mCurrentRenameGesture;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.gestures_list);
@@ -96,9 +99,10 @@ public class GestureBuilderActivity extends ListActivity {
         mAdapter = new GesturesAdapter(this);
         setListAdapter(mAdapter);
 
-        if (sStore == null) {
+        if (sStore == null)
+        {
             sStore = GestureLibraries.fromFile(mStoreFile);
-            sStore.setOrientationStyle(8 /*GestureStore.ORIENTATION_SENSITIVE*/);
+            sStore.setOrientationStyle(8);
         }
         mEmpty = findViewById(android.R.id.empty);
         loadGestures();
@@ -106,30 +110,37 @@ public class GestureBuilderActivity extends ListActivity {
         registerForContextMenu(getListView());
     }
 
-    static GestureLibrary getStore() {
+    static GestureLibrary getStore()
+    {
         return sStore;
     }
 
-    public void reloadGestures(View v) {
+    public void reloadGestures(View v)
+    {
         loadGestures();
     }
-    
-    public void addGesture(View v) {
+
+    public void addGesture(View v)
+    {
         Intent intent = new Intent(this, CreateGestureActivity.class);
         startActivityForResult(intent, REQUEST_NEW_GESTURE);
     }
-    
-    public void testGesture(View v) {
+
+    public void testGesture(View v)
+    {
     	Intent intent = new Intent(this, TestGestureActivity.class);
     	startActivityForResult(intent, REQUEST_TEST_GESTURE);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
+
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
                 case REQUEST_NEW_GESTURE:
                     loadGestures();
                     break;
@@ -137,18 +148,22 @@ public class GestureBuilderActivity extends ListActivity {
         }
     }
 
-    private void loadGestures() {
-        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
+    private void loadGestures()
+    {
+        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED)
+        {
             mTask.cancel(true);
         }        
         mTask = (GesturesLoadTask) new GesturesLoadTask().execute();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         super.onDestroy();
 
-        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED) {
+        if (mTask != null && mTask.getStatus() != GesturesLoadTask.Status.FINISHED)
+        {
             mTask.cancel(true);
             mTask = null;
         }
@@ -156,31 +171,40 @@ public class GestureBuilderActivity extends ListActivity {
         cleanupRenameDialog();
     }
 
-    private void checkForEmpty() {
-        if (mAdapter.getCount() == 0) {
+    private void checkForEmpty()
+    {
+        if (mAdapter.getCount() == 0)
+        {
             mEmpty.setText(R.string.gestures_empty);
         }
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
 
-        if (mCurrentRenameGesture != null) {
+        if (mCurrentRenameGesture != null)
+        {
             outState.putLong(GESTURES_INFO_ID, mCurrentRenameGesture.gesture.getID());
         }
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle state) {
+    protected void onRestoreInstanceState(Bundle state)
+    {
         super.onRestoreInstanceState(state);
 
         long id = state.getLong(GESTURES_INFO_ID, -1);
-        if (id != -1) {
+        if (id != -1)
+        {
             final Set<String> entries = sStore.getGestureEntries();
-out:        for (String name : entries) {
-                for (Gesture gesture : sStore.getGestures(name)) {
-                    if (gesture.getID() == id) {
+            out:        for (String name : entries)
+            {
+                for (Gesture gesture : sStore.getGestures(name))
+                {
+                    if (gesture.getID() == id)
+                    {
                         mCurrentRenameGesture = new NamedGesture();
                         mCurrentRenameGesture.name = name;
                         mCurrentRenameGesture.gesture = gesture;
@@ -193,7 +217,8 @@ out:        for (String name : entries) {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenu.ContextMenuInfo menuInfo) {
+                                    ContextMenu.ContextMenuInfo menuInfo)
+    {
 
         super.onCreateContextMenu(menu, v, menuInfo);
 
@@ -205,12 +230,14 @@ out:        for (String name : entries) {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(MenuItem item)
+    {
         final AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)
-                item.getMenuInfo();
+            item.getMenuInfo();
         final NamedGesture gesture = (NamedGesture) menuInfo.targetView.getTag();
 
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case MENU_ID_RENAME:
                 renameGesture(gesture);
                 return true;
@@ -222,28 +249,34 @@ out:        for (String name : entries) {
         return super.onContextItemSelected(item);
     }
 
-    private void renameGesture(NamedGesture gesture) {
+    private void renameGesture(NamedGesture gesture)
+    {
         mCurrentRenameGesture = gesture;
         showDialog(DIALOG_RENAME_GESTURE);
     }
 
     @Override
-    protected Dialog onCreateDialog(int id) {
-        if (id == DIALOG_RENAME_GESTURE) {
+    protected Dialog onCreateDialog(int id)
+    {
+        if (id == DIALOG_RENAME_GESTURE)
+        {
             return createRenameDialog();
         }
         return super.onCreateDialog(id);
     }
 
     @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
+    protected void onPrepareDialog(int id, Dialog dialog)
+    {
         super.onPrepareDialog(id, dialog);
-        if (id == DIALOG_RENAME_GESTURE) {
+        if (id == DIALOG_RENAME_GESTURE)
+        {
             mInput.setText(mCurrentRenameGesture.name);
         }
     }
 
-    private Dialog createRenameDialog() {
+    private Dialog createRenameDialog()
+    {
         final View layout = View.inflate(this, R.layout.dialog_rename, null);
         mInput = (EditText) layout.findViewById(R.id.name);
         ((TextView) layout.findViewById(R.id.label)).setText(R.string.gestures_rename_label);
@@ -253,20 +286,23 @@ out:        for (String name : entries) {
         builder.setTitle(getString(R.string.gestures_rename_title));
         builder.setCancelable(true);
         builder.setOnCancelListener(new Dialog.OnCancelListener() {
-            public void onCancel(DialogInterface dialog) {
-                cleanupRenameDialog();
-            }
-        });
+                public void onCancel(DialogInterface dialog)
+                {
+                    cleanupRenameDialog();
+                }
+            });
         builder.setNegativeButton(getString(R.string.cancel_action),
             new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(DialogInterface dialog, int which)
+                {
                     cleanupRenameDialog();
                 }
             }
         );
         builder.setPositiveButton(getString(R.string.rename_action),
             new Dialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(DialogInterface dialog, int which)
+                {
                     changeGestureName();
                 }
             }
@@ -275,18 +311,22 @@ out:        for (String name : entries) {
         return builder.create();
     }
 
-    private void changeGestureName() {
+    private void changeGestureName()
+    {
         final String name = mInput.getText().toString();
-        if (!TextUtils.isEmpty(name)) {
+        if (!TextUtils.isEmpty(name))
+        {
             final NamedGesture renameGesture = mCurrentRenameGesture;
             final GesturesAdapter adapter = mAdapter;
             final int count = adapter.getCount();
 
             // Simple linear search, there should not be enough items to warrant
             // a more sophisticated search
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 final NamedGesture gesture = adapter.getItem(i);
-                if (gesture.gesture.getID() == renameGesture.gesture.getID()) {
+                if (gesture.gesture.getID() == renameGesture.gesture.getID())
+                {
                     sStore.removeGesture(gesture.name, gesture.gesture);
                     gesture.name = mInput.getText().toString();
                     sStore.addGesture(gesture.name, gesture.gesture);
@@ -299,15 +339,18 @@ out:        for (String name : entries) {
         mCurrentRenameGesture = null;
     }
 
-    private void cleanupRenameDialog() {
-        if (mRenameDialog != null) {
+    private void cleanupRenameDialog()
+    {
+        if (mRenameDialog != null)
+        {
             mRenameDialog.dismiss();
             mRenameDialog = null;
         }
         mCurrentRenameGesture = null;
     }
 
-    private void deleteGesture(NamedGesture gesture) {
+    private void deleteGesture(NamedGesture gesture)
+    {
         sStore.removeGesture(gesture.name, gesture.gesture);
         sStore.save();
 
@@ -321,13 +364,15 @@ out:        for (String name : entries) {
         Toast.makeText(this, R.string.gestures_delete_success, Toast.LENGTH_SHORT).show();
     }
 
-    private class GesturesLoadTask extends AsyncTask<Void, NamedGesture, Integer> {
+    private class GesturesLoadTask extends AsyncTask<Void, NamedGesture, Integer>
+    {
         private int mThumbnailSize;
         private int mThumbnailInset;
         private int mPathColor;
 
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
 
             final Resources resources = getResources();
@@ -338,27 +383,32 @@ out:        for (String name : entries) {
             findViewById(R.id.addButton).setEnabled(false);
             findViewById(R.id.testButton).setEnabled(false);
             findViewById(R.id.reloadButton).setEnabled(false);
-            
+
             mAdapter.setNotifyOnChange(false);            
             mAdapter.clear();
         }
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params)
+        {
             if (isCancelled()) return STATUS_CANCELLED;
-            if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()))
+            {
                 return STATUS_NO_STORAGE;
             }
 
             final GestureLibrary store = sStore;
 
-            if (store.load()) {
-                for (String name : store.getGestureEntries()) {
+            if (store.load())
+            {
+                for (String name : store.getGestureEntries())
+                {
                     if (isCancelled()) break;
 
-                    for (Gesture gesture : store.getGestures(name)) {
+                    for (Gesture gesture : store.getGestures(name))
+                    {
                         final Bitmap bitmap = gesture.toBitmap(mThumbnailSize, mThumbnailSize,
-                                mThumbnailInset, mPathColor);
+                                                               mThumbnailInset, mPathColor);
                         final NamedGesture namedGesture = new NamedGesture();
                         namedGesture.gesture = gesture;
                         namedGesture.name = name;
@@ -375,13 +425,15 @@ out:        for (String name : entries) {
         }
 
         @Override
-        protected void onProgressUpdate(NamedGesture... values) {
+        protected void onProgressUpdate(NamedGesture... values)
+        {
             super.onProgressUpdate(values);
 
             final GesturesAdapter adapter = mAdapter;
             adapter.setNotifyOnChange(false);
 
-            for (NamedGesture gesture : values) {
+            for (NamedGesture gesture : values)
+            {
                 adapter.add(gesture);
             }
 
@@ -390,15 +442,19 @@ out:        for (String name : entries) {
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(Integer result)
+        {
             super.onPostExecute(result);
 
-            if (result == STATUS_NO_STORAGE) {
+            if (result == STATUS_NO_STORAGE)
+            {
                 getListView().setVisibility(View.GONE);
                 mEmpty.setVisibility(View.VISIBLE);
                 mEmpty.setText(getString(R.string.gestures_error_loading,
-                        mStoreFile.getAbsolutePath()));
-            } else {
+                                         mStoreFile.getAbsolutePath()));
+            }
+            else
+            {
                 findViewById(R.id.addButton).setEnabled(true);
                 findViewById(R.id.testButton).setEnabled(true);
                 findViewById(R.id.reloadButton).setEnabled(true);
@@ -407,28 +463,34 @@ out:        for (String name : entries) {
         }
     }
 
-    static class NamedGesture {
+    static class NamedGesture
+    {
         String name;
         Gesture gesture;
     }
 
-    private class GesturesAdapter extends ArrayAdapter<NamedGesture> {
+    private class GesturesAdapter extends ArrayAdapter<NamedGesture>
+    {
         private final LayoutInflater mInflater;
         private final Map<Long, Drawable> mThumbnails = Collections.synchronizedMap(
-                new HashMap<Long, Drawable>());
+            new HashMap<Long, Drawable>());
 
-        public GesturesAdapter(Context context) {
+        public GesturesAdapter(Context context)
+        {
             super(context, 0);
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        void addBitmap(Long id, Bitmap bitmap) {
+        void addBitmap(Long id, Bitmap bitmap)
+        {
             mThumbnails.put(id, new BitmapDrawable(bitmap));
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            if (convertView == null)
+            {
                 convertView = mInflater.inflate(R.layout.gestures_item, parent, false);
             }
 
@@ -438,7 +500,7 @@ out:        for (String name : entries) {
             label.setTag(gesture);
             label.setText(gesture.name);
             label.setCompoundDrawablesWithIntrinsicBounds(mThumbnails.get(gesture.gesture.getID()),
-                    null, null, null);
+                                                          null, null, null);
 
             return convertView;
         }

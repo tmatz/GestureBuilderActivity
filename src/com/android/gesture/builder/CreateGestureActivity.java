@@ -30,18 +30,20 @@ import android.widget.Toast;
 import java.io.File;
 import android.view.*;
 
-public class CreateGestureActivity extends Activity {
+public class CreateGestureActivity extends Activity
+{
     private static final float LENGTH_THRESHOLD = 120.0f;
 
     private Gesture mGesture;
     private View mDoneButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        
+
         setContentView(R.layout.create_gesture);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -53,37 +55,45 @@ public class CreateGestureActivity extends Activity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
-        
-        if (mGesture != null) {
+
+        if (mGesture != null)
+        {
             outState.putParcelable("gesture", mGesture);
         }
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
         super.onRestoreInstanceState(savedInstanceState);
-        
+
         mGesture = savedInstanceState.getParcelable("gesture");
-        if (mGesture != null) {
+        if (mGesture != null)
+        {
             final GestureOverlayView overlay =
-                    findViewById(R.id.gestures_overlay);
+                findViewById(R.id.gestures_overlay);
             overlay.post(new Runnable() {
-                public void run() {
-                    overlay.setGesture(mGesture);
-                }
-            });
+                    public void run()
+                    {
+                        overlay.setGesture(mGesture);
+                    }
+                });
 
             mDoneButton.setEnabled(true);
         }
     }
 
-    public void addGesture(View v) {
-        if (mGesture != null) {
+    public void addGesture(View v)
+    {
+        if (mGesture != null)
+        {
             final TextView input = findViewById(R.id.gesture_name);
             final CharSequence name = input.getText();
-            if (name.length() == 0) {
+            if (name.length() == 0)
+            {
                 input.setError(getString(R.string.error_missing_name));
                 return;
             }
@@ -95,39 +105,48 @@ public class CreateGestureActivity extends Activity {
             setResult(RESULT_OK);
 
             final String path = new File(Environment.getExternalStorageDirectory(),
-                    "gestures").getAbsolutePath();
+                                         "gestures").getAbsolutePath();
             Toast.makeText(this, getString(R.string.save_success, path), Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else
+        {
             setResult(RESULT_CANCELED);
         }
 
         finish();
-        
+
     }
-    
-    public void cancelGesture(View v) {
+
+    public void cancelGesture(View v)
+    {
         setResult(RESULT_CANCELED);
         finish();
     }
-    
-    private class GesturesProcessor implements GestureOverlayView.OnGestureListener {
-        public void onGestureStarted(GestureOverlayView overlay, MotionEvent event) {
+
+    private class GesturesProcessor implements GestureOverlayView.OnGestureListener
+    {
+        public void onGestureStarted(GestureOverlayView overlay, MotionEvent event)
+        {
             mDoneButton.setEnabled(false);
             mGesture = null;
         }
 
-        public void onGesture(GestureOverlayView overlay, MotionEvent event) {
+        public void onGesture(GestureOverlayView overlay, MotionEvent event)
+        {
         }
 
-        public void onGestureEnded(GestureOverlayView overlay, MotionEvent event) {
+        public void onGestureEnded(GestureOverlayView overlay, MotionEvent event)
+        {
             mGesture = overlay.getGesture();
-            if (mGesture.getLength() < LENGTH_THRESHOLD) {
+            if (mGesture.getLength() < LENGTH_THRESHOLD)
+            {
                 overlay.clear(false);
             }
             mDoneButton.setEnabled(true);
         }
 
-        public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
+        public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event)
+        {
         }
     }
 }
