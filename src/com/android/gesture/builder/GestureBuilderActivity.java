@@ -278,14 +278,16 @@ public class GestureBuilderActivity extends ListActivity
     private Dialog createRenameDialog()
     {
         final View layout = View.inflate(this, R.layout.dialog_rename, null);
-        mInput = (EditText) layout.findViewById(R.id.name);
-        ((TextView) layout.findViewById(R.id.label)).setText(R.string.gestures_rename_label);
+        final TextView label = layout.findViewById(R.id.label);
+        label.setText(R.string.gestures_rename_label);
+        mInput = layout.findViewById(R.id.name);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(0);
         builder.setTitle(getString(R.string.gestures_rename_title));
         builder.setCancelable(true);
-        builder.setOnCancelListener(new Dialog.OnCancelListener() {
+        builder.setOnCancelListener(
+            new Dialog.OnCancelListener() {
                 public void onCancel(DialogInterface dialog)
                 {
                     cleanupRenameDialog();
