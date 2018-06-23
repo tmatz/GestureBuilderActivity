@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import android.view.*;
 
 public class CreateGestureActivity extends Activity {
     private static final float LENGTH_THRESHOLD = 120.0f;
@@ -39,11 +40,15 @@ public class CreateGestureActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        
         setContentView(R.layout.create_gesture);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         mDoneButton = findViewById(R.id.done);
 
-        GestureOverlayView overlay = (GestureOverlayView) findViewById(R.id.gestures_overlay);
+        GestureOverlayView overlay = findViewById(R.id.gestures_overlay);
         overlay.addOnGestureListener(new GesturesProcessor());
     }
 
@@ -63,7 +68,7 @@ public class CreateGestureActivity extends Activity {
         mGesture = savedInstanceState.getParcelable("gesture");
         if (mGesture != null) {
             final GestureOverlayView overlay =
-                    (GestureOverlayView) findViewById(R.id.gestures_overlay);
+                    findViewById(R.id.gestures_overlay);
             overlay.post(new Runnable() {
                 public void run() {
                     overlay.setGesture(mGesture);
@@ -76,7 +81,7 @@ public class CreateGestureActivity extends Activity {
 
     public void addGesture(View v) {
         if (mGesture != null) {
-            final TextView input = (TextView) findViewById(R.id.gesture_name);
+            final TextView input = findViewById(R.id.gesture_name);
             final CharSequence name = input.getText();
             if (name.length() == 0) {
                 input.setError(getString(R.string.error_missing_name));

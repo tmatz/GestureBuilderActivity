@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.Comparator;
 import java.util.Set;
 import java.io.File;
+import android.gesture.*;
 
 public class GestureBuilderActivity extends ListActivity {
     private static final int STATUS_SUCCESS = 0;
@@ -97,9 +98,9 @@ public class GestureBuilderActivity extends ListActivity {
 
         if (sStore == null) {
             sStore = GestureLibraries.fromFile(mStoreFile);
-            sStore.setOrientationStyle(4 /*GestureStore.ORIENTATION_SENSITIVE_4*/);
+            sStore.setOrientationStyle(8 /*GestureStore.ORIENTATION_SENSITIVE*/);
         }
-        mEmpty = (TextView) findViewById(android.R.id.empty);
+        mEmpty = findViewById(android.R.id.empty);
         loadGestures();
 
         registerForContextMenu(getListView());

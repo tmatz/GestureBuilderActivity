@@ -1,37 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="none" >
-    
-    <android.gesture.GestureOverlayView
-        android:id="@+id/gestures_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gestureStrokeType="single"
-        android:fadeEnabled="false" >
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10" />
-    </android.gesture.GestureOverlayView>
+	<TextView
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:text="Text"
+		android:id="@+id/info"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+	<android.gesture.GestureOverlayView
+		android:id="@+id/gestures_overlay"
+		android:layout_width="match_parent"
+		android:layout_height="0dip"
+		android:layout_weight="1"
+		android:orientation="vertical"
+		android:gestureStrokeType="single"
+		android:fadeEnabled="false">
 
-        <Button
-            android:id="@+id/done"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="done"
-            android:text="@+string/button_done" />
-    </LinearLayout>
+		<TextView
+			android:id="@+id/text"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:ems="10"/>
+
+	</android.gesture.GestureOverlayView>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<Button
+			android:id="@+id/done"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:onClick="done"
+			android:text="@+string/button_done"/>
+
+	</LinearLayout>
 
 </LinearLayout>
+
