@@ -126,8 +126,6 @@ public class CreateGestureActivity extends Activity
     {
         public void onGestureStarted(GestureOverlayView overlay, MotionEvent event)
         {
-            mDoneButton.setEnabled(false);
-            mGesture = null;
         }
 
         public void onGesture(GestureOverlayView overlay, MotionEvent event)
@@ -136,11 +134,16 @@ public class CreateGestureActivity extends Activity
 
         public void onGestureEnded(GestureOverlayView overlay, MotionEvent event)
         {
-            mGesture = overlay.getGesture();
-            if (mGesture.getLength() < LENGTH_THRESHOLD)
+            final Gesture gesture = overlay.getGesture();
+            if (gesture.getLength() < LENGTH_THRESHOLD)
             {
                 overlay.clear(false);
+                mGesture = null;
+                mDoneButton.setEnabled(false);
+                return;
             }
+
+            mGesture = gesture;
             mDoneButton.setEnabled(true);
         }
 

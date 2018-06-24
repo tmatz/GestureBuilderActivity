@@ -51,6 +51,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.io.File;
 import android.gesture.*;
+import android.graphics.*;
 
 public class GestureBuilderActivity extends ListActivity
 {
@@ -371,6 +372,7 @@ public class GestureBuilderActivity extends ListActivity
         private int mThumbnailSize;
         private int mThumbnailInset;
         private int mPathColor;
+        private int mPointSize;
 
         @Override
         protected void onPreExecute()
@@ -381,6 +383,7 @@ public class GestureBuilderActivity extends ListActivity
             mPathColor = resources.getColor(R.color.gesture_color);
             mThumbnailInset = (int) resources.getDimension(R.dimen.gesture_thumbnail_inset);
             mThumbnailSize = (int) resources.getDimension(R.dimen.gesture_thumbnail_size);
+            mPointSize = (int) resources.getDimension(R.dimen.gesture_point_size);
 
             findViewById(R.id.addButton).setEnabled(false);
             findViewById(R.id.testButton).setEnabled(false);
@@ -411,6 +414,17 @@ public class GestureBuilderActivity extends ListActivity
                     {
                         final Bitmap bitmap = gesture.toBitmap(mThumbnailSize, mThumbnailSize,
                                                                mThumbnailInset, mPathColor);
+                        final Canvas canvas = new Canvas(bitmap);
+                        final Paint paint = new Paint();
+                        paint.setColor(mPathColor);
+                        GestureStroke stroke = gesture.getStrokes().get(0);
+                        RectF bbox = stroke.boundingBox;
+                        float size = Math.max(bbox.width(), bbox.height());
+                        float insetSize = mThumbnailSize - mThumbnailInset * 2;
+                        float offset = insetSize / 2 + mThumbnailInset;
+                        float x = ((stroke.points[0] - bbox.left - bbox.width() / 2) * insetSize / size) + offset;
+                        float y = ((stroke.points[1] - bbox.top - bbox.height() / 2) * insetSize / size) + offset;
+                        canvas.drawCircle(x, y, mPointSize, paint);
                         final NamedGesture namedGesture = new NamedGesture();
                         namedGesture.gesture = gesture;
                         namedGesture.name = name;
