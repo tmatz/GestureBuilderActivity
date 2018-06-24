@@ -80,7 +80,9 @@ public class GestureBuilderActivity extends ListActivity
         }
     };
 
-    private static GestureLibrary sStore;
+    private static GestureBuilderActivity sInstance;
+
+    private GestureLibrary mStore;
 
     private GesturesAdapter mAdapter;
     private GesturesLoadTask mTask;
@@ -100,10 +102,11 @@ public class GestureBuilderActivity extends ListActivity
         mAdapter = new GesturesAdapter(this);
         setListAdapter(mAdapter);
 
-        if (sStore == null)
+        sInstance = this;
+        if (mStore == null)
         {
-            sStore = GestureLibraries.fromFile(sStoreFile);
-            sStore.setOrientationStyle(8);
+            mStore = GestureLibraries.fromFile(sStoreFile);
+            mStore.setOrientationStyle(8);
         }
         mEmpty = findViewById(android.R.id.empty);
         loadGestures();
@@ -113,7 +116,7 @@ public class GestureBuilderActivity extends ListActivity
 
     static GestureLibrary getStore()
     {
-        return sStore;
+        return sInstance.mStore;
     }
 
     public void reloadGestures(View v)
@@ -170,6 +173,7 @@ public class GestureBuilderActivity extends ListActivity
         }
 
         cleanupRenameDialog();
+        sInstance = null;
     }
 
     private void checkForEmpty()
@@ -199,10 +203,10 @@ public class GestureBuilderActivity extends ListActivity
         long id = state.getLong(GESTURES_INFO_ID, -1);
         if (id != -1)
         {
-            final Set<String> entries = sStore.getGestureEntries();
+            final Set<String> entries = mStore.getGestureEntries();
             out:        for (String name : entries)
             {
-                for (Gesture gesture : sStore.getGestures(name))
+                for (Gesture gesture : mStore.getGestures(name))
                 {
                     if (gesture.getID() == id)
                     {
@@ -330,13 +334,14 @@ public class GestureBuilderActivity extends ListActivity
                 final NamedGesture gesture = adapter.getItem(i);
                 if (gesture.gesture.getID() == renameGesture.gesture.getID())
                 {
-                    sStore.removeGesture(gesture.name, gesture.gesture);
+                    mStore.removeGesture(gesture.name, gesture.gesture);
                     gesture.name = mInput.getText().toString();
-                    sStore.addGesture(gesture.name, gesture.gesture);
+                    mStore.addGesture(gesture.name, gesture.gesture);
                     break;
                 }
             }
 
+            mStore.save();
             adapter.notifyDataSetChanged();
         }
         mCurrentRenameGesture = null;
@@ -354,8 +359,8 @@ public class GestureBuilderActivity extends ListActivity
 
     private void deleteGesture(NamedGesture gesture)
     {
-        sStore.removeGesture(gesture.name, gesture.gesture);
-        sStore.save();
+        mStore.removeGesture(gesture.name, gesture.gesture);
+        mStore.save();
 
         final GesturesAdapter adapter = mAdapter;
         adapter.setNotifyOnChange(false);
@@ -402,7 +407,7 @@ public class GestureBuilderActivity extends ListActivity
                 return STATUS_NO_STORAGE;
             }
 
-            final GestureLibrary store = sStore;
+            final GestureLibrary store = mStore;
 
             if (store.load())
             {
