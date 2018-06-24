@@ -70,7 +70,7 @@ public class GestureBuilderActivity extends ListActivity
     // Type: long (id)
     private static final String GESTURES_INFO_ID = "gestures.info_id";
 
-    private final File mStoreFile = new File(Environment.getExternalStorageDirectory(), "gestures");
+    public static final File sStoreFile = new File(Environment.getExternalStorageDirectory(), "gestures");
 
     private final Comparator<NamedGesture> mSorter = new Comparator<NamedGesture>() {
         public int compare(NamedGesture object1, NamedGesture object2)
@@ -101,7 +101,7 @@ public class GestureBuilderActivity extends ListActivity
 
         if (sStore == null)
         {
-            sStore = GestureLibraries.fromFile(mStoreFile);
+            sStore = GestureLibraries.fromFile(sStoreFile);
             sStore.setOrientationStyle(8);
         }
         mEmpty = findViewById(android.R.id.empty);
@@ -453,7 +453,7 @@ public class GestureBuilderActivity extends ListActivity
                 getListView().setVisibility(View.GONE);
                 mEmpty.setVisibility(View.VISIBLE);
                 mEmpty.setText(getString(R.string.gestures_error_loading,
-                                         mStoreFile.getAbsolutePath()));
+                                         sStoreFile.getAbsolutePath()));
             }
             else
             {
@@ -501,8 +501,9 @@ public class GestureBuilderActivity extends ListActivity
 
             label.setTag(gesture);
             label.setText(gesture.name);
-            label.setCompoundDrawablesWithIntrinsicBounds(mThumbnails.get(gesture.gesture.getID()),
-                                                          null, null, null);
+            label.setCompoundDrawablesWithIntrinsicBounds(
+                mThumbnails.get(gesture.gesture.getID()),
+                null, null, null);
 
             return convertView;
         }
