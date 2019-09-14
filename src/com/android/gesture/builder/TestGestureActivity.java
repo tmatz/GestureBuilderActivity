@@ -24,6 +24,7 @@ public class TestGestureActivity extends Activity
         final TextView text = findViewById(R.id.text);
         final TextView info = findViewById(R.id.info);
         final GestureOverlayView overlay = findViewById(R.id.gestures_overlay);
+        overlay.setGestureVisible(true);
 
         overlay.addOnGestureListener(
             new GestureOverlayView.OnGestureListener()
